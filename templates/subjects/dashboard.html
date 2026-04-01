@@ -1,0 +1,212 @@
+{% extends "Home/base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Dashboard Matières</h2>
+        <div>
+            <a href="{% url 'subjects:subject_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter une matière
+            </a>
+            <a href="{% url 'subjects:subject_list' %}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Liste des matières
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistiques générales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h4>{{ total_subjects }}</h4>
+                    <p class="mb-0">Total matières</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h4>{{ total_subject_groups }}</h4>
+                    <p class="mb-0">Associations matière-groupe</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h4>{{ total_credits }}</h4>
+                    <p class="mb-0">Total crédits</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h4>{{ total_heures }}</h4>
+                    <p class="mb-0">Total heures/semaine</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Statistiques par département -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Statistiques par Département</h5>
+                </div>
+                <div class="card-body">
+                    {% if department_stats %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Département</th>
+                                        <th>Matières</th>
+                                        <th>Crédits</th>
+                                        <th>Heures</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for stat in department_stats %}
+                                    <tr>
+                                        <td>{{ stat.departement__name }}</td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ stat.count }}</span>
+                                        </td>
+                                        <td>{{ stat.credits }}</td>
+                                        <td>{{ stat.hours }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune statistique disponible</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Matières récentes -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Matières Récentes</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_subjects %}
+                        <div class="list-group list-group-flush">
+                            {% for subject in recent_subjects %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ subject.nom }}</strong>
+                                        <br><small class="text-muted">{{ subject.departement.name }}</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-secondary">{{ subject.code }}</span>
+                                        <span class="badge bg-info">{{ subject.credits }} crédits</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune matière récente</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Matières sans enseignants -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Matières sans Enseignants
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if subjects_without_teachers %}
+                        <div class="list-group list-group-flush">
+                            {% for subject in subjects_without_teachers %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ subject.nom }}</strong>
+                                        <br><small class="text-muted">{{ subject.departement.name }}</small>
+                                    </div>
+                                    <a href="{% url 'subjects:subject_update' subject.pk %}" 
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-user-plus"></i> Assigner
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-success">
+                            <i class="fas fa-check-circle"></i> Toutes les matières ont des enseignants assignés
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'subjects:subject_create' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus"></i> Nouvelle matière
+                        </a>
+                        <a href="{% url 'subjects:subjectgroup_list' %}" class="btn btn-outline-success">
+                            <i class="fas fa-link"></i> Gérer les associations
+                        </a>
+                        <a href="{% url 'subjects:subject_list' %}" class="btn btn-outline-info">
+                            <i class="fas fa-list"></i> Voir toutes les matières
+                        </a>
+                        <a href="/admin/" class="btn btn-outline-secondary">
+                            <i class="fas fa-cog"></i> Administration
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+.d-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .d-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock body %}

@@ -1,0 +1,131 @@
+{% extends "Home/base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Liste des Cours</h2>
+        <div>
+            <a href="{% url 'timetable:emploi_du_temps' %}" class="btn btn-info">
+                <i class="fas fa-calendar-alt"></i> Emploi du temps
+            </a>
+            <a href="{% url 'timetable:cours_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter un cours
+            </a>
+        </div>
+    </div>
+
+    {% if cours_list %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nom du cours</th>
+                        <th>Enseignant</th>
+                        <th>Groupe</th>
+                        <th>Salle</th>
+                        <th>Jour</th>
+                        <th>Horaire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cours in cours_list %}
+                    <tr>
+                        <td>
+                            <span class="badge" style="background-color: {{ cours.couleur }};">
+                                {{ cours.nom }}
+                            </span>
+                        </td>
+                        <td>{{ cours.enseignant.nom }}</td>
+                        <td>{{ cours.groupe.nom }}</td>
+                        <td>{{ cours.salle.nom }}</td>
+                        <td>{{ cours.jour_semaine }}</td>
+                        <td>{{ cours.plage_horaire }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'timetable:cours_update' cours.pk %}" 
+                                   class="btn btn-sm btn-warning" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'timetable:cours_delete' cours.pk %}" 
+                                   class="btn btn-sm btn-danger" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+            <nav aria-label="Pagination des cours">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; Premier</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+    {% else %}
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                <h4>Aucun cours trouvé</h4>
+                <p class="text-muted">Commencez par ajouter des salles, des enseignants et des groupes, puis créez vos premiers cours.</p>
+                <a href="{% url 'timetable:cours_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Ajouter un cours
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.table th {
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-group .btn {
+    margin: 0 1px;
+}
+
+.pagination {
+    margin-top: 2rem;
+}
+</style>
+{% endblock body %}

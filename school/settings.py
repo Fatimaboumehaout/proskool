@@ -51,7 +51,10 @@ INSTALLED_APPS = [
     'student',
     'authentication',
     'departements',
-    'holidays'
+    'holidays',
+    'timetable',
+    'subjects',
+    'exams'
 ]
 
 MIDDLEWARE = [

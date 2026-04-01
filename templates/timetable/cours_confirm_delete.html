@@ -1,0 +1,49 @@
+{% extends "Home/base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3>Confirmer la suppression</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Attention!</strong> Cette action est irréversible.
+                    </div>
+
+                    <p>Êtes-vous sûr de vouloir supprimer le cours suivant?</p>
+
+                    <div class="card bg-light mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cours.nom }}</h5>
+                            <ul class="list-unstyled mb-0">
+                                <li><strong>Enseignant:</strong> {{ cours.enseignant.nom }}</li>
+                                <li><strong>Groupe:</strong> {{ cours.groupe.nom }}</li>
+                                <li><strong>Salle:</strong> {{ cours.salle.nom }}</li>
+                                <li><strong>Jour:</strong> {{ cours.jour_semaine }}</li>
+                                <li><strong>Horaire:</strong> {{ cours.plage_horaire }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'timetable:cours_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

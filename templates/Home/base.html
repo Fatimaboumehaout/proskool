@@ -122,11 +122,11 @@
                         </ul>
                      </li>
                      <li class="submenu">
-                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                        <a href="{% url 'subjects:dashboard' %}"><i class="fas fa-book-reader"></i> <span>Subjects</span></a> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="subjects.html">Subject List</a></li>
-                           <li><a href="add-subject.html">Subject Add</a></li>
-                           <li><a href="edit-subject.html">Subject Edit</a></li>
+                           <li><a href="{% url 'subjects:dashboard' %}">Dashboard</a></li>
+                           <li><a href="{% url 'subjects:subject_list' %}">Subject List</a></li>
+                           <li><a href="{% url 'subjects:subject_create' %}">Subject Add</a></li>
                         </ul>
                      </li>
                      <li class="menu-title">
@@ -150,13 +150,13 @@
                         <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
                      </li>
                      <li>
-                        <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                        <a href="{% url 'exams:dashboard' %}"><i class="fas fa-clipboard-list"></i> <span>Exams</span></a>
                      </li>
                      <li>
                         <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
                      </li>
                      <li>
-                        <a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                        <a href="{% url 'timetable:emploi_du_temps' %}"><i class="fas fa-table"></i> <span>Time Table</span></a>
                      </li>
                      <li>
                         <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
@@ -240,9 +240,13 @@
          </div>
 
 
-         {% block body %}
-            
-         {% endblock %}
+         <div class="page-wrapper">
+             <div class="content">
+                 {% block body %}
+                    
+                 {% endblock %}
+             </div>
+         </div>
 
       </div>
 

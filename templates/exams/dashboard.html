@@ -1,0 +1,217 @@
+{% extends "Home/base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Dashboard Examens</h2>
+        <div>
+            <a href="{% url 'exams:exam_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter un examen
+            </a>
+            <a href="{% url 'exams:exam_list' %}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Liste des examens
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistiques générales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h4>{{ total_exams }}</h4>
+                    <p class="mb-0">Total examens</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h4>{{ total_results }}</h4>
+                    <p class="mb-0">Total résultats</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h4>{{ upcoming_exams }}</h4>
+                    <p class="mb-0">Examens à venir</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h4>{{ total_sessions }}</h4>
+                    <p class="mb-0">Sessions d'examens</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Examens récents -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Examens Récents</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_exams %}
+                        <div class="list-group list-group-flush">
+                            {% for exam in recent_exams %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ exam.title }}</strong>
+                                        <br><small class="text-muted">{{ exam.subject.nom }} - {{ exam.exam_date }}</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-{{ exam.status|yesno:'success,warning,info,danger' }}">
+                                            {{ exam.get_status_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucun examen récent</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Examens en cours -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Examens en Cours</h5>
+                </div>
+                <div class="card-body">
+                    {% if ongoing_exams %}
+                        <div class="list-group list-group-flush">
+                            {% for exam in ongoing_exams %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ exam.title }}</strong>
+                                        <br><small class="text-muted">{{ exam.subject.nom }} - {{ exam.start_time }}</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-warning">En cours</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-success">
+                            <i class="fas fa-check-circle"></i> Aucun examen en cours
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Statistiques par type -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Statistiques par Type d'Examen</h5>
+                </div>
+                <div class="card-body">
+                    {% if exam_type_stats %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Nombre</th>
+                                        <th>Moyenne</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for stat in exam_type_stats %}
+                                    <tr>
+                                        <td>{{ stat.exam_type__name }}</td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ stat.count }}</span>
+                                        </td>
+                                        <td>
+                                            {% if stat.avg_score %}
+                                                <span class="badge bg-success">{{ stat.avg_score|floatformat:2 }}</span>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune statistique disponible</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'exams:exam_create' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus"></i> Nouvel examen
+                        </a>
+                        <a href="{% url 'exams:result_list' %}" class="btn btn-outline-success">
+                            <i class="fas fa-chart-bar"></i> Voir les résultats
+                        </a>
+                        <a href="{% url 'exams:session_list' %}" class="btn btn-outline-info">
+                            <i class="fas fa-calendar"></i> Gérer les sessions
+                        </a>
+                        <a href="{% url 'exams:bulk_grading' %}" class="btn btn-outline-warning">
+                            <i class="fas fa-edit"></i> Notation en masse
+                        </a>
+                        <a href="/admin/" class="btn btn-outline-secondary">
+                            <i class="fas fa-cog"></i> Administration
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+.d-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .d-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock body %}

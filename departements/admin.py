@@ -47,9 +47,10 @@ class DepartmentAdmin(admin.ModelAdmin):
     def budget_display(self, obj):
         """Affiche le budget formaté"""
         if obj.budget:
+            budget_formatted = f"{obj.budget:,.2f} DH"
             return format_html(
-                '<span style="color: green; font-weight: bold;">{:,.2f} DH</span>',
-                obj.budget
+                '<span style="color: green; font-weight: bold;">{}</span>',
+                budget_formatted
             )
         return "-"
     budget_display.short_description = "Budget"
