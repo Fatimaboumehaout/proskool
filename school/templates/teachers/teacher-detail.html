@@ -1,0 +1,111 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class='page-wrapper'>
+  <div class='content container-fluid'>
+    <div class='page-header'>
+      <div class='row align-items-center'>
+        <div class='col'>
+          <h3 class='page-title'>Teacher Details</h3>
+          <ul class='breadcrumb'>
+            <li class='breadcrumb-item'><a href='/dashboard'>Dashboard</a></li>
+            <li class='breadcrumb-item'><a href="{% url 'teachers:teacher_list' %}">Teachers</a></li>
+            <li class='breadcrumb-item active'>{{ teacher.first_name }} {{ teacher.last_name }}</li>
+          </ul>
+        </div>
+        <div class='col-auto text-right float-right ml-auto'>
+          <a href="{% url 'teachers:edit_teacher' teacher.employee_id %}" class='btn btn-primary'>
+            <i class='fas fa-edit'></i> Edit
+          </a>
+          <a href="{% url 'teachers:teacher_list' %}" class='btn btn-secondary ml-2'>
+            <i class='fas fa-arrow-left'></i> Back
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-md-6'>
+        <div class='card'>
+          <div class='card-header'>
+            <h5 class='card-title'>Personal Information</h5>
+          </div>
+          <div class='card-body'>
+            <div class='row'>
+              <div class='col-12'>
+                {% if teacher.teacher_image %}
+                  <div class='text-center mb-3'>
+                    <img src='{{ teacher.teacher_image.url }}' class='rounded-circle' width='100' height='100' alt='Teacher Image'>
+                  </div>
+                {% endif %}
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>First Name:</strong> {{ teacher.first_name }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Last Name:</strong> {{ teacher.last_name }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Teacher ID:</strong> {{ teacher.employee_id }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Gender:</strong> {{ teacher.gender }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Date of Birth:</strong> {{ teacher.date_of_birth|date:"d M Y" }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Email:</strong> {{ teacher.email }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Phone:</strong> {{ teacher.phone }}</p>
+              </div>
+              <div class='col-12'>
+                <p><strong>Address:</strong> {{ teacher.address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class='col-md-6'>
+        <div class='card'>
+          <div class='card-header'>
+            <h5 class='card-title'>Professional Information</h5>
+          </div>
+          <div class='card-body'>
+            <div class='row'>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Joining Date:</strong> {{ teacher.hire_date|date:"d M Y" }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Qualification:</strong> {{ teacher.specialization }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Department:</strong> {{ teacher.department }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Status:</strong> 
+                  {% if teacher.status == 'active' %}
+                    <span class='badge bg-success'>Active</span>
+                  {% elif teacher.status == 'inactive' %}
+                    <span class='badge bg-danger'>Inactive</span>
+                  {% else %}
+                    <span class='badge bg-warning'>On Leave</span>
+                  {% endif %}
+                </p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Salary:</strong> {{ teacher.salary }}</p>
+              </div>
+              <div class='col-12 col-sm-6'>
+                <p><strong>Created:</strong> {{ teacher.created_at|date:"d M Y H:i" }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

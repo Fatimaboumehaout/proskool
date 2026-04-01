@@ -1,0 +1,103 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class='page-wrapper'>
+  <div class='content container-fluid'>
+    <div class='page-header'>
+      <h3 class='page-title'>Add Teacher</h3>
+    </div>
+    <div class='card'><div class='card-body'>
+      <form method='POST' enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class='row'>
+          <div class='col-12'><h5 class='form-title'>Teacher Information</h5></div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>First Name *</label>
+              <input type='text' name='first_name' class='form-control' required>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Last Name *</label>
+              <input type='text' name='last_name' class='form-control' required>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Teacher ID *</label>
+              <input type='text' name='teacher_id' class='form-control' required>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Gender</label>
+              <select name='gender' class='form-control'>
+                <option value='Male'>Male</option>
+                <option value='Female'>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Date of Birth</label>
+              <input type='date' name='date_of_birth' class='form-control'>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Email *</label>
+              <input type='email' name='email' class='form-control' required>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Phone</label>
+              <input type='text' name='phone' class='form-control'>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Joining Date</label>
+              <input type='date' name='joining_date' class='form-control'>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Qualification</label>
+              <input type='text' name='qualification' class='form-control'>
+            </div>
+          </div>
+          <div class='col-12 col-sm-6'>
+            <div class='form-group'>
+              <label>Department</label>
+              <select name='department' class='form-control'>
+                <option value=''>— Select Department —</option>
+                {% for dept in departments %}
+                  <option value='{{ dept.pk }}'>{{ dept.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class='col-12'>
+            <div class='form-group'>
+              <label>Address</label>
+              <textarea name='address' class='form-control' rows='3'></textarea>
+            </div>
+          </div>
+          <div class='col-12'>
+            <div class='form-group'>
+              <label>Teacher Image</label>
+              <input type='file' name='teacher_image' class='form-control'>
+            </div>
+          </div>
+          <div class='col-12'>
+            <button type='submit' class='btn btn-primary'>Add Teacher</button>
+            <a href="{% url 'teachers:teacher_list' %}" class='btn btn-secondary ml-2'>Cancel</a>
+          </div>
+        </div>
+      </form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

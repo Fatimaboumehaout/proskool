@@ -1,0 +1,88 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class='page-wrapper'>
+  <div class='content container-fluid'>
+    <div class='page-header'>
+      <div class='row align-items-center'>
+        <div class='col'>
+          <h3 class='page-title'>Teachers</h3>
+          <ul class='breadcrumb'>
+            <li class='breadcrumb-item'><a href='/dashboard'>Dashboard</a></li>
+            <li class='breadcrumb-item active'>Teachers</li>
+          </ul>
+        </div>
+        <div class='col-auto text-right float-right ml-auto'>
+          <a href="{% url 'teachers:add_teacher' %}" class='btn btn-primary'>
+            <i class='fas fa-plus'></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class='alert alert-{{ message.tags }}'>{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div class='row'>
+      <div class='col-sm-12'>
+        <div class='card card-table'>
+          <div class='card-body'>
+            <table class='table table-hover datatable'>
+              <thead>
+                <tr>
+                  <th>ID</th><th>Name</th><th>Department</th>
+                  <th>Email</th><th>Phone</th><th>Joining Date</th>
+                  <th class='text-right'>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                  <td>{{ teacher.employee_id }}</td>
+                  <td>
+                    <h2 class='table-avatar'>
+                      {% if teacher.teacher_image %}
+                        <a href="{% url 'teachers:view_teacher' teacher.employee_id %}"
+                           class='avatar avatar-sm mr-2'>
+                          <img class='avatar-img rounded-circle'
+                               src='{{ teacher.teacher_image.url }}'
+                               alt='Teacher'>
+                        </a>
+                      {% endif %}
+                      <a href="{% url 'teachers:view_teacher' teacher.employee_id %}">
+                        {{ teacher.first_name }} {{ teacher.last_name }}
+                      </a>
+                    </h2>
+                  </td>
+                  <td>{{ teacher.department|default:'—' }}</td>
+                  <td>{{ teacher.email }}</td>
+                  <td>{{ teacher.phone }}</td>
+                  <td>{{ teacher.hire_date|date:'d M Y' }}</td>
+                  <td class='text-right'>
+                    <a href="{% url 'teachers:edit_teacher' teacher.employee_id %}"
+                       class='btn btn-sm bg-success-light mr-2'>
+                      <i class='fas fa-pen'></i>
+                    </a>
+                    <form action="{% url 'teachers:delete_teacher' teacher.employee_id %}"
+                          method='POST' style='display:inline;'>
+                      {% csrf_token %}
+                      <button type='submit' class='btn btn-sm bg-danger-light'
+                              onclick="return confirm('Delete this teacher?')">
+                        <i class='fas fa-trash'></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan='7' class='text-center'>No teachers found.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

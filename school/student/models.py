@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Parent(models.Model):
     father_name = models.CharField(max_length=100)
     father_occupation = models.CharField(max_length=100, blank=True)

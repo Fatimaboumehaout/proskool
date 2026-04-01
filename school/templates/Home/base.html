@@ -90,27 +90,27 @@
                      <li class="submenu active">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="index.html" class="active">Admin Dashboard</a></li>
-                           <li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
-                           <li><a href="student-dashboard.html">Student Dashboard</a></li>
+                           <li><a href="{% url 'authentication:dashboard' %}" class="active">Admin Dashboard</a></li>
+                           <li><a href="#">Teacher Dashboard</a></li>
+                           <li><a href="#">Student Dashboard</a></li>
                         </ul>
                      </li>
                      <li class="submenu">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="">Student List</a></li>
-                           <li><a href="student-details.html">Student View</a></li>
-                           <li><a href="">Student Add</a></li>
-                           <li><a href="edit-student.html">Student Edit</a></li>
+                           <li><a href="{% url 'student:student_list' %}">Student List</a></li>
+                           <li><a href="#">Student View</a></li>
+                           <li><a href="{% url 'student:add_student' %}">Student Add</a></li>
+                           <li><a href="#">Student Edit</a></li>
                         </ul>
                      </li>
                      <li class="submenu">
                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="teachers.html">Teacher List</a></li>
-                           <li><a href="teacher-details.html">Teacher View</a></li>
-                           <li><a href="add-teacher.html">Teacher Add</a></li>
-                           <li><a href="edit-teacher.html">Teacher Edit</a></li>
+                           <li><a href="{% url 'teachers:teacher_list' %}">Teacher List</a></li>
+                           <li><a href="{% url 'teachers:teacher_list' %}">Teacher View</a></li>
+                           <li><a href="{% url 'teachers:add_teacher' %}">Teacher Add</a></li>
+                           <li><a href="#">Teacher Edit</a></li>
                         </ul>
                      </li>
                      <li class="submenu">
@@ -167,10 +167,10 @@
                      <li class="submenu">
                         <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="">Login</a></li>
-                           <li><a href="">Register</a></li>
-                           <li><a href="">Forgot Password</a></li>
-                           <li><a href="error-404.html">Error Page</a></li>
+                           <li><a href="{% url 'authentication:login' %}">Login</a></li>
+                           <li><a href="{% url 'authentication:signup' %}">Register</a></li>
+                           <li><a href="#">Forgot Password</a></li>
+                           <li><a href="#">Error Page</a></li>
                         </ul>
                      </li>
                      <li>
