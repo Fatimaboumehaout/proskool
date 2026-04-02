@@ -1,4 +1,4 @@
-# Python PFM - Plateforme de Gestion Scolaire
+# Python PFM  proskool- Plateforme de Gestion Scolaire
 
 Une application web complète de gestion scolaire développée avec Django, conçue pour administrer efficacement les aspects académiques et administratifs d'un établissement d'enseignement.
 
